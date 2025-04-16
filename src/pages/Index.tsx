@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, RefreshCw, Shield, Info } from "lucide-react";
+import { Loader2, RefreshCw, Shield, Info, Upload, BarChart } from "lucide-react";
 import ImageUploader from "@/components/ImageUploader";
 import DetectionResult from "@/components/DetectionResult";
 import UploadGuide from "@/components/UploadGuide";
 import { processImage, revokeImagePreview, type DetectionResult as DetectionResultType } from "@/lib/imageProcessor";
 import { showNotification } from "@/components/Notification";
 import FeaturesOverview from "@/components/FeaturesOverview";
+import ButtonGroup from "@/components/ButtonGroup";
 
 const Index = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -138,9 +139,15 @@ const Index = () => {
           ) : (
             <div className="space-y-6">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
-                  <TabsTrigger value="upload" className="transition-all duration-300">Image</TabsTrigger>
-                  <TabsTrigger value="result" disabled={!result} className="transition-all duration-300">Result</TabsTrigger>
+                <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
+                  <TabsTrigger value="upload" className="transition-all duration-300">
+                    <Upload className="mr-2 h-4 w-4" />
+                    Image
+                  </TabsTrigger>
+                  <TabsTrigger value="result" disabled={!result} className="transition-all duration-300">
+                    <BarChart className="mr-2 h-4 w-4" />
+                    Result
+                  </TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="upload" className="animate-fade-in">
@@ -157,7 +164,7 @@ const Index = () => {
                       )}
                     </div>
                     
-                    <div className="flex justify-center mt-6 gap-4">
+                    <ButtonGroup spacing="normal" align="center">
                       {!isProcessing ? (
                         <>
                           <Button 
@@ -182,7 +189,7 @@ const Index = () => {
                           Analyzing...
                         </Button>
                       )}
-                    </div>
+                    </ButtonGroup>
                   </Card>
                 </TabsContent>
                 
@@ -191,7 +198,7 @@ const Index = () => {
                     <>
                       <DetectionResult result={result} previewUrl={previewUrl} />
                       
-                      <div className="flex justify-center mt-6">
+                      <ButtonGroup spacing="normal" align="center">
                         <Button 
                           variant="outline" 
                           onClick={handleReset}
@@ -200,7 +207,7 @@ const Index = () => {
                           <RefreshCw className="h-4 w-4 mr-2" />
                           Try Another Image
                         </Button>
-                      </div>
+                      </ButtonGroup>
                     </>
                   )}
                 </TabsContent>
@@ -224,7 +231,16 @@ const Index = () => {
               <span className="font-medium">DermaVision</span>
             </div>
             
-            <div className="flex gap-6">
+            <ButtonGroup align="center" spacing="wide" className="md:hidden">
+              <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">
+                Home
+              </Link>
+              <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">
+                About
+              </Link>
+            </ButtonGroup>
+            
+            <div className="hidden md:flex gap-6">
               <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">
                 Home
               </Link>
