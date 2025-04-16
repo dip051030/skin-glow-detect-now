@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,6 +8,7 @@ import ImageUploader from "@/components/ImageUploader";
 import DetectionResult from "@/components/DetectionResult";
 import UploadGuide from "@/components/UploadGuide";
 import { processImage, revokeImagePreview, type DetectionResult as DetectionResultType } from "@/lib/imageProcessor";
+import { showNotification } from "@/components/Notification";
 
 const Index = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -24,6 +26,12 @@ const Index = () => {
     setSelectedImage(file);
     setPreviewUrl(URL.createObjectURL(file));
     setActiveTab("upload");
+    
+    showNotification({
+      type: "info",
+      title: "Image Selected",
+      message: "Your image has been uploaded and is ready for analysis."
+    });
   };
 
   const handleDetection = async () => {
@@ -35,9 +43,20 @@ const Index = () => {
       const detectionResult = await processImage(selectedImage);
       setResult(detectionResult);
       setActiveTab("result");
+      
+      showNotification({
+        type: "success",
+        title: "Analysis Complete",
+        message: "Your skin image has been successfully analyzed."
+      });
     } catch (error) {
       console.error("Error processing image:", error);
-      alert("An error occurred while processing the image. Please try again.");
+      
+      showNotification({
+        type: "error",
+        title: "Analysis Failed",
+        message: "An error occurred while analyzing your image. Please try again."
+      });
     } finally {
       setIsProcessing(false);
     }
@@ -52,6 +71,12 @@ const Index = () => {
     setPreviewUrl(null);
     setResult(null);
     setActiveTab("upload");
+    
+    showNotification({
+      type: "info",
+      title: "Reset Complete",
+      message: "You can now upload a new image for analysis."
+    });
   };
 
   return (
@@ -98,34 +123,46 @@ const Index = () => {
                 </TabsList>
                 
                 <TabsContent value="upload" className="animate-fade-in">
-                  <ImageUploader onImageSelected={handleImageSelected} />
-                  
-                  <div className="flex justify-center mt-6 gap-4">
-                    {!isProcessing ? (
-                      <>
-                        <Button 
-                          onClick={handleDetection}
-                          className="animate-fade-in"
-                          disabled={!selectedImage}
-                        >
-                          Analyze Image
+                  <Card className="p-6 border-medical-light/50 bg-gradient-to-b from-background to-medical-light/20 shadow-md">
+                    <div className="flex justify-center mb-4">
+                      {previewUrl && (
+                        <div className="relative rounded-lg overflow-hidden border-2 border-primary/20 shadow-lg transition-all hover:scale-[1.01] duration-300">
+                          <img 
+                            src={previewUrl} 
+                            alt="Selected skin" 
+                            className="max-h-[400px] object-contain" 
+                          />
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="flex justify-center mt-6 gap-4">
+                      {!isProcessing ? (
+                        <>
+                          <Button 
+                            onClick={handleDetection}
+                            className="animate-fade-in bg-primary hover:bg-primary/90 shadow-lg transition-all hover:shadow-xl"
+                            disabled={!selectedImage}
+                          >
+                            Analyze Image
+                          </Button>
+                          <Button 
+                            variant="outline" 
+                            onClick={handleReset}
+                            className="animate-fade-in border-medical-dark/30 hover:bg-medical-light/20"
+                          >
+                            <RefreshCw className="h-4 w-4 mr-2" />
+                            Reset
+                          </Button>
+                        </>
+                      ) : (
+                        <Button disabled className="animate-pulse bg-primary/80">
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin-slow" />
+                          Analyzing...
                         </Button>
-                        <Button 
-                          variant="outline" 
-                          onClick={handleReset}
-                          className="animate-fade-in"
-                        >
-                          <RefreshCw className="h-4 w-4 mr-2" />
-                          Reset
-                        </Button>
-                      </>
-                    ) : (
-                      <Button disabled className="animate-pulse">
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin-slow" />
-                        Analyzing...
-                      </Button>
-                    )}
-                  </div>
+                      )}
+                    </div>
+                  </Card>
                 </TabsContent>
                 
                 <TabsContent value="result" className="animate-fade-in">
@@ -137,7 +174,7 @@ const Index = () => {
                         <Button 
                           variant="outline" 
                           onClick={handleReset}
-                          className="animate-fade-in"
+                          className="animate-fade-in border-medical-dark/30 hover:bg-medical-light/20"
                         >
                           <RefreshCw className="h-4 w-4 mr-2" />
                           Try Another Image
