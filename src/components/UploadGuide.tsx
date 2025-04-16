@@ -4,7 +4,7 @@ import { UploadCloud, Search, AlertCircle } from "lucide-react";
 
 const UploadGuide = () => {
   return (
-    <Card className="w-full max-w-md mx-auto bg-secondary/20">
+    <Card className="w-full max-w-md mx-auto bg-gradient-to-br from-primary/5 to-secondary/20 border-primary/20 hover-lift">
       <CardContent className="p-6">
         <h3 className="text-lg font-medium mb-4 text-center">How It Works</h3>
         
@@ -46,8 +46,11 @@ const UploadGuide = () => {
           </div>
         </div>
         
-        <div className="mt-4 text-xs text-center text-muted-foreground animate-fade-in" style={{ animationDelay: "400ms" }}>
-          Note: This tool provides preliminary information only and is not a substitute for professional medical advice.
+        <div className="mt-6 p-3 border border-dashed border-primary/30 rounded-md bg-white/40 animate-fade-in" style={{ animationDelay: "400ms" }}>
+          <p className="text-xs text-center text-muted-foreground">
+            <span className="font-medium block mb-1">For best results:</span>
+            Use good lighting, take close-up images of the affected area, and ensure the image is in focus
+          </p>
         </div>
       </CardContent>
     </Card>

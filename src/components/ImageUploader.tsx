@@ -60,13 +60,13 @@ const ImageUploader = ({ onImageSelected }: ImageUploaderProps) => {
   };
 
   return (
-    <Card className={`w-full max-w-md mx-auto transition-all duration-300 ${isDragging ? 'border-primary border-2' : ''}`}>
+    <Card className={`w-full max-w-md mx-auto transition-all duration-300 hover-lift ${isDragging ? 'border-primary border-2 shadow-lg' : 'shadow-md'}`}>
       <CardContent className="p-6">
         <div
           className={`
             flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-md
             min-h-[200px] cursor-pointer transition-all duration-300
-            ${isDragging ? 'bg-primary/10 border-primary' : 'bg-secondary/20 border-secondary/50 hover:bg-secondary/30'}
+            ${isDragging ? 'bg-primary/10 border-primary' : 'bg-gradient-to-br from-secondary/20 to-primary/5 border-primary/30 hover:bg-primary/5'}
           `}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -78,21 +78,21 @@ const ImageUploader = ({ onImageSelected }: ImageUploaderProps) => {
               <img 
                 src={preview} 
                 alt="Preview" 
-                className="w-full h-full object-contain animate-fade-in" 
+                className="w-full h-full object-contain animate-scale-up" 
               />
             </div>
           ) : (
             <>
-              <UploadCloud size={48} className="mb-4 text-primary animate-pulse" />
-              <p className="text-lg font-medium mb-2">Upload Skin Image</p>
-              <p className="text-sm text-muted-foreground text-center">
+              <UploadCloud size={48} className="mb-4 text-primary animate-float" />
+              <p className="text-lg font-medium mb-2 animate-fade-in">Upload Skin Image</p>
+              <p className="text-sm text-muted-foreground text-center mb-4 animate-fade-in" style={{ animationDelay: "100ms" }}>
                 Drag and drop an image here or click to browse
               </p>
-              <div className="flex gap-4 mt-4">
+              <div className="flex gap-4 animate-fade-in" style={{ animationDelay: "200ms" }}>
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="flex items-center gap-2 animate-fade-in" 
+                  className="flex items-center gap-2 bg-white/50 hover:bg-white/80 border-primary/20 hover:border-primary/40 transition-all" 
                   onClick={(e) => {
                     e.stopPropagation();
                     triggerFileInput();
@@ -104,7 +104,7 @@ const ImageUploader = ({ onImageSelected }: ImageUploaderProps) => {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="flex items-center gap-2 animate-fade-in" 
+                  className="flex items-center gap-2 bg-white/50 hover:bg-white/80 border-primary/20 hover:border-primary/40 transition-all" 
                   onClick={(e) => {
                     e.stopPropagation();
                     // In a real app, this would trigger the device camera
