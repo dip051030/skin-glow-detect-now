@@ -12,6 +12,7 @@ import { showNotification } from "@/components/Notification";
 import FeaturesOverview from "@/components/FeaturesOverview";
 import ButtonGroup from "@/components/ButtonGroup";
 import Testimonials from "@/components/Testimonials";
+import { LogIn, UserPlus } from "lucide-react";
 
 const Index = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -92,16 +93,25 @@ const Index = () => {
               Derma<span className="text-primary">Vision</span>
             </h1>
           </div>
-          <div className="flex items-center gap-6">
-            <p className="text-muted-foreground max-w-md text-right hidden md:block">
-              Advanced AI-powered skin disease detection and analysis
-            </p>
+          <div className="flex items-center gap-3">
             <Link 
               to="/about" 
-              className="flex items-center gap-1.5 text-foreground/70 hover:text-primary transition-colors"
+              className="flex items-center gap-1.5 px-2 text-foreground/70 hover:text-primary transition-colors"
             >
               <Info className="w-4 h-4" />
               <span>About</span>
+            </Link>
+            <Link to="/login">
+              <Button variant="outline" className="border-primary/50 text-primary px-5 transition-transform hover:scale-105 animate-popup" style={{ animationDelay: "70ms" }}>
+                <LogIn className="w-4 h-4 mr-1" />
+                Log in
+              </Button>
+            </Link>
+            <Link to="/signup">
+              <Button className="bg-primary text-white px-5 font-semibold rounded-lg shadow-sm transition-transform hover:scale-105 animate-popup" style={{ animationDelay: "110ms" }}>
+                <UserPlus className="w-4 h-4 mr-1" />
+                Sign up
+              </Button>
             </Link>
           </div>
         </div>
@@ -278,6 +288,12 @@ const Index = () => {
               </Link>
               <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors font-medium">
                 About
+              </Link>
+              <Link to="/login" className="text-muted-foreground hover:text-primary transition-colors font-medium flex items-center">
+                <LogIn className="w-4 h-4 mr-1" /> Log in
+              </Link>
+              <Link to="/signup" className="text-primary font-medium hover:underline flex items-center">
+                <UserPlus className="w-4 h-4 mr-1" /> Sign up
               </Link>
             </ButtonGroup>
             <div className="hidden md:flex gap-8">
