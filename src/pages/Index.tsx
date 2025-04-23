@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,7 @@ import { processImage, revokeImagePreview, type DetectionResult as DetectionResu
 import { showNotification } from "@/components/Notification";
 import FeaturesOverview from "@/components/FeaturesOverview";
 import ButtonGroup from "@/components/ButtonGroup";
+import Testimonials from "@/components/Testimonials";
 
 const Index = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -84,7 +84,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <header className="py-6 border-b border-border bg-card/50 shadow-sm">
+      <header className="py-6 md:pb-7 border-b border-border bg-card/50 shadow-sm animate-popup">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Shield className="w-8 h-8 text-primary animate-float" strokeWidth={1.5} />
@@ -107,20 +107,20 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="flex-1 py-8 px-4 container mx-auto">
+      <main className="flex-1 py-10 px-4 container mx-auto">
         <div className="max-w-4xl mx-auto">
-          <div className="relative mb-12">
+          <div className="relative mb-12 animate-popup">
             <div className="absolute -z-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl opacity-50 -top-20 -right-20"></div>
-            <h2 className="text-2xl md:text-3xl font-semibold mb-3 text-center animate-fade-in">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center animate-fade-in">
               {!selectedImage 
-                ? "AI-Powered Skin Analysis" 
+                ? "Feel Confident About Your Skin Health" 
                 : result 
                   ? "Detailed Detection Result" 
                   : "Analyzing your image..."}
             </h2>
             <p className="text-center text-muted-foreground max-w-xl mx-auto animate-fade-in" style={{ animationDelay: "100ms" }}>
               {!selectedImage 
-                ? "Upload a skin image and get instant AI analysis to identify potential skin conditions" 
+                ? "Just upload a skin photo and DermaVision’s AI gives you quick, private, research-backed guidance for next steps." 
                 : result 
                   ? "Review the preliminary assessment of your skin image" 
                   : "Our AI is carefully examining your skin image..."}
@@ -128,17 +128,63 @@ const Index = () => {
           </div>
 
           {!selectedImage ? (
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="animate-fade-in">
-                <ImageUploader onImageSelected={handleImageSelected} />
+            <>
+              <div className="flex flex-col md:flex-row gap-8 items-stretch animate-popup">
+                <div className="flex-1 animate-enter-up">
+                  <ImageUploader onImageSelected={handleImageSelected} />
+                </div>
+                <div className="flex-1 animate-enter-up" style={{ animationDelay: "120ms" }}>
+                  <UploadGuide />
+                </div>
               </div>
-              <div className="animate-fade-in" style={{ animationDelay: "200ms" }}>
-                <UploadGuide />
+              <div className="mt-14 mb-12 animate-popup" style={{ animationDelay: "190ms" }}>
+                <Card className="max-w-2xl mx-auto bg-gradient-to-r from-green-50 via-primary/10 to-green-100 border-primary/20 shadow-md hover-lift">
+                  <div className="flex flex-col md:flex-row items-center p-7 gap-8">
+                    <div className="flex-1 text-center md:text-left">
+                      <h3 className="text-lg font-semibold mb-1">
+                        <span role="img" aria-label="leaf" className="mr-1">🌱</span>
+                        Your photo never leaves your device. 100% private.
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Results are instant and confidential. We store nothing without your consent.
+                      </p>
+                    </div>
+                    <div className="flex-1 flex flex-col gap-2 items-center justify-center mt-3 md:mt-0">
+                      <Button 
+                        className="w-full md:w-auto bg-primary/90 hover:bg-primary text-white px-7 py-3 animate-button-bounce shadow-xl rounded-lg"
+                        onClick={() => {
+                          document.querySelector<HTMLInputElement>("input[type='file']")?.click()
+                        }}
+                      >Try Now</Button>
+                    </div>
+                  </div>
+                </Card>
               </div>
-            </div>
+              <div className="mt-18 animate-fade-in" style={{ animationDelay: "240ms" }}>
+                <FeaturesOverview />
+              </div>
+              <div className="mt-20 animate-popup" style={{ animationDelay: "320ms" }}>
+                <Testimonials />
+              </div>
+              <div className="mt-20 animate-popup" style={{ animationDelay: "400ms" }}>
+                <Card className="bg-gradient-to-tr from-primary/5 to-secondary/20 border-primary/20 hover-lift max-w-3xl mx-auto">
+                  <div className="p-8">
+                    <div className="flex items-center gap-3 mb-3"><Shield className="w-6 h-6 text-primary" strokeWidth={1.5} /><h3 className="font-semibold text-lg">Built on Evidence and Empathy</h3></div>
+                    <ul className="list-disc ml-7 text-sm text-muted-foreground mb-2">
+                      <li>Created by expert dermatologists and AI scientists.</li>
+                      <li>No diagnosis—just guidance for next steps.</li>
+                      <li>Always preserves user privacy.</li>
+                    </ul>
+                    <p className="text-xs mt-2 text-muted-foreground italic">
+                      For best results, use a clear photo and consult a doctor for any persistent concern.
+                    </p>
+                  </div>
+                </Card>
+              </div>
+            </>
           ) : (
-            <div className="space-y-6">
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <div className="space-y-8">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full animate-popup">
                 <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
                   <TabsTrigger value="upload" className="transition-all duration-300">
                     <Upload className="mr-2 h-4 w-4" />
@@ -151,10 +197,10 @@ const Index = () => {
                 </TabsList>
                 
                 <TabsContent value="upload" className="animate-fade-in">
-                  <Card className="p-6 border-primary/20 bg-gradient-to-b from-background to-primary/5 shadow-md">
+                  <Card className="p-6 border-primary/20 bg-gradient-to-b from-background to-primary/5 shadow-md animate-popup">
                     <div className="flex justify-center mb-4">
                       {previewUrl && (
-                        <div className="relative rounded-lg overflow-hidden border-2 border-primary/20 shadow-lg transition-all hover:scale-[1.01] duration-300">
+                        <div className="relative rounded-lg overflow-hidden border-2 border-primary/20 shadow-lg transition-all hover:scale-[1.01] duration-300 animate-popup">
                           <img 
                             src={previewUrl} 
                             alt="Selected skin" 
@@ -163,33 +209,34 @@ const Index = () => {
                         </div>
                       )}
                     </div>
-                    
-                    <ButtonGroup spacing="normal" align="center">
-                      {!isProcessing ? (
-                        <>
-                          <Button 
-                            onClick={handleDetection}
-                            className="animate-scale-up bg-primary hover:bg-primary/90 shadow-lg transition-all hover:shadow-xl"
-                            disabled={!selectedImage}
-                          >
-                            Analyze Image
+                    <div className="flex justify-center mb-2">
+                      <ButtonGroup spacing="normal" align="center">
+                        {!isProcessing ? (
+                          <>
+                            <Button 
+                              onClick={handleDetection}
+                              className="bg-primary shadow-md px-7 py-2 rounded-md font-medium text-white hover:bg-primary/90 animate-button-bounce"
+                              disabled={!selectedImage}
+                            >
+                              Analyze Image
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              onClick={handleReset}
+                              className="border-primary/30 px-6 hover:bg-primary/10 text-primary"
+                            >
+                              <RefreshCw className="h-4 w-4 mr-2" />
+                              Reset
+                            </Button>
+                          </>
+                        ) : (
+                          <Button disabled className="bg-primary/80 text-white animate-pulse px-7">
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin-slow" />
+                            Analyzing...
                           </Button>
-                          <Button 
-                            variant="outline" 
-                            onClick={handleReset}
-                            className="animate-scale-up border-primary/30 hover:bg-primary/10"
-                          >
-                            <RefreshCw className="h-4 w-4 mr-2" />
-                            Reset
-                          </Button>
-                        </>
-                      ) : (
-                        <Button disabled className="animate-pulse bg-primary/80">
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin-slow" />
-                          Analyzing...
-                        </Button>
-                      )}
-                    </ButtonGroup>
+                        )}
+                      </ButtonGroup>
+                    </div>
                   </Card>
                 </TabsContent>
                 
@@ -197,59 +244,51 @@ const Index = () => {
                   {result && (
                     <>
                       <DetectionResult result={result} previewUrl={previewUrl} />
-                      
-                      <ButtonGroup spacing="normal" align="center">
-                        <Button 
-                          variant="outline" 
-                          onClick={handleReset}
-                          className="animate-scale-up border-primary/30 hover:bg-primary/10"
-                        >
-                          <RefreshCw className="h-4 w-4 mr-2" />
-                          Try Another Image
-                        </Button>
-                      </ButtonGroup>
+                      <div className="flex justify-center mt-6">
+                        <ButtonGroup spacing="normal" align="center">
+                          <Button 
+                            variant="outline" 
+                            onClick={handleReset}
+                            className="border-primary/30 px-6 hover:bg-primary/10 text-primary"
+                          >
+                            <RefreshCw className="h-4 w-4 mr-2" />
+                            Try Another Image
+                          </Button>
+                        </ButtonGroup>
+                      </div>
                     </>
                   )}
                 </TabsContent>
               </Tabs>
             </div>
           )}
-          
-          {!selectedImage && (
-            <div className="mt-24 animate-fade-in" style={{ animationDelay: "300ms" }}>
-              <FeaturesOverview />
-            </div>
-          )}
         </div>
       </main>
 
-      <footer className="py-8 border-t border-border bg-card/50">
+      <footer className="py-8 border-t border-border bg-card/70 animate-popup mt-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
               <Shield className="w-5 h-5 text-primary" strokeWidth={1.5} />
               <span className="font-medium">DermaVision</span>
             </div>
-            
-            <ButtonGroup align="center" spacing="wide" className="md:hidden">
-              <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">
+            <ButtonGroup align="center" spacing="wide" className="md:hidden mt-3">
+              <Link to="/" className="text-muted-foreground hover:text-primary transition-colors font-medium">
                 Home
               </Link>
-              <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors font-medium">
                 About
               </Link>
             </ButtonGroup>
-            
-            <div className="hidden md:flex gap-6">
-              <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">
+            <div className="hidden md:flex gap-8">
+              <Link to="/" className="text-muted-foreground hover:text-primary font-medium transition-colors">
                 Home
               </Link>
-              <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/about" className="text-muted-foreground hover:text-primary font-medium transition-colors">
                 About
               </Link>
             </div>
-            
-            <p className="text-sm text-muted-foreground text-center md:text-right">
+            <p className="text-sm text-muted-foreground text-center md:text-right mt-4 md:mt-0">
               © {new Date().getFullYear()} DermaVision. All Rights Reserved.
               <span className="block text-xs mt-1">
                 For educational purposes. Not a substitute for professional medical advice.

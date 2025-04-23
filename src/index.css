@@ -1,87 +1,55 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 160 30% 98%;
-    --foreground: 170 25% 25%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 170 25% 25%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 170 25% 25%;
-
-    --primary: 152 60% 52%;
-    --primary-foreground: 152 80% 98%;
-
-    --secondary: 120 40% 85%;
-    --secondary-foreground: 120 40% 30%;
-
-    --muted: 170 20% 96%;
-    --muted-foreground: 170 16% 46%;
-
-    --accent: 152 60% 94%;
-    --accent-foreground: 152 60% 30%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 170 40% 98%;
-
-    --border: 170 20% 90%;
-    --input: 170 20% 90%;
-    --ring: 152 60% 52%;
-
+    --background: 151 32% 98%;             /* Soft Mint */
+    --foreground: 157 22% 28%;             /* Muted Olive */
+    --card: 153 18% 97%;
+    --card-foreground: 151 27% 16%;
+    --popover: 155 16% 98%;
+    --popover-foreground: 157 14% 34%;
+    --primary: 151 63% 44%;                /* Healing Green */
+    --primary-foreground: 152 66% 98%;
+    --secondary: 119 32% 87%;              /* Gentle Sage */
+    --secondary-foreground: 120 33% 27%;
+    --muted: 148 24% 92%;                  /* Light Tea */
+    --muted-foreground: 151 9% 49%;
+    --accent: 148 24% 92%;
+    --accent-foreground: 154 80% 32%;
+    --destructive: 6 72% 52%;
+    --destructive-foreground: 151 32% 97%;
+    --border: 151 19% 85%;
+    --input: 151 18% 85%;
+    --ring: 152 52% 49%;
     --radius: 0.75rem;
 
-    --sidebar-background: 160 20% 98%;
-    --sidebar-foreground: 170 20% 26%;
-    --sidebar-primary: 170 20% 10%;
-    --sidebar-primary-foreground: 160 20% 98%;
-    --sidebar-accent: 170 20% 95%;
-    --sidebar-accent-foreground: 170 20% 10%;
-    --sidebar-border: 120 15% 90%;
-    --sidebar-ring: 155 50% 60%;
+    /* Overlay Greens */
+    --overlay-soft: 151 62% 94%;
   }
 
   .dark {
-    --background: 170 25% 10%;
-    --foreground: 160 20% 98%;
-
-    --card: 170 25% 12%;
-    --card-foreground: 160 20% 98%;
-
-    --popover: 170 25% 12%;
-    --popover-foreground: 160 20% 98%;
-
-    --primary: 152 55% 45%;
-    --primary-foreground: 160 20% 98%;
-
-    --secondary: 120 25% 50%;
-    --secondary-foreground: 120 20% 98%;
-
-    --muted: 170 32% 17%;
-    --muted-foreground: 170 20% 65%;
-
-    --accent: 152 40% 20%;
-    --accent-foreground: 152 50% 90%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 160 20% 98%;
-
-    --border: 170 32% 17%;
-    --input: 170 32% 17%;
-    --ring: 152 55% 45%;
-    
-    --sidebar-background: 170 20% 10%;
-    --sidebar-foreground: 170 20% 95%;
-    --sidebar-primary: 155 35% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 170 20% 15%;
-    --sidebar-accent-foreground: 170 20% 95%;
-    --sidebar-border: 170 20% 15%;
-    --sidebar-ring: 155 50% 60%;
+    --background: 151 32% 11%;
+    --foreground: 151 22% 96%;
+    --card: 151 23% 16%;
+    --card-foreground: 151 63% 90%;
+    --popover: 151 30% 12%;
+    --popover-foreground: 151 63% 90%;
+    --primary: 151 60% 42%;
+    --primary-foreground: 152 66% 98%;
+    --secondary: 119 22% 33%;
+    --secondary-foreground: 119 50% 90%;
+    --muted: 148 13% 23%;
+    --muted-foreground: 151 9% 69%;
+    --accent: 148 20% 22%;
+    --accent-foreground: 148 40% 88%;
+    --destructive: 6 74% 37%;
+    --destructive-foreground: 151 32% 97%;
+    --border: 151 15% 23%;
+    --input: 151 15% 23%;
+    --ring: 151 50% 39%;
+    --overlay-soft: 151 53% 19%;
   }
 }
 
@@ -91,8 +59,46 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
+}
+
+/* POP-UP MODALS & CARDS */
+@keyframes popup-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(30px);
+  }
+  80% {
+    opacity: 0.8;
+    transform: scale(1.04) translateY(-3px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-popup {
+  animation: popup-fade-in 0.45s cubic-bezier(0.55, 0, 0.45, 1) forwards;
+}
+
+@keyframes button-bounce {
+  0% { transform: scale(1);}
+  45% { transform: scale(1.09);}
+  80% { transform: scale(0.98);}
+  100% { transform: scale(1);}
+}
+.animate-button-bounce {
+  animation: button-bounce 0.33s cubic-bezier(0.42,0,0.58,1);
+}
+
+@keyframes enter-up {
+  0% { opacity:0; transform: translateY(20px);}
+  100% { opacity:1; transform: translateY(0);}
+}
+.animate-enter-up {
+  animation: enter-up 0.5s 0.09s cubic-bezier(.56,0,.42,1) both;
 }
 
 /* Add animations for toast notifications */
@@ -180,4 +186,3 @@
   transform: translateY(-5px);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
 }
-
