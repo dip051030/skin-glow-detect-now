@@ -1,18 +1,4 @@
-# Welcome to your Lovable project
-
-## Project info
-
-**URL**: https://lovable.dev/projects/82708978-45c7-439d-ad73-293a334451fc
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/82708978-45c7-439d-ad73-293a334451fc) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
+<b>Welcome to skin disease detection. </b>
 
 **Use your preferred IDE**
 
