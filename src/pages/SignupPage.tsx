@@ -2,7 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { UserPlus, Mail, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Mail, UserPlus } from "lucide-react";
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,20 +13,21 @@ const SignupPage = () => {
     e.preventDefault();
     setLoading(true);
     setTimeout(() => {
+      localStorage.setItem("dermavision_logged_in", "true");
       setLoading(false);
-      navigate("/login");
+      navigate("/");
     }, 1100);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#f6fdf7] to-[#e6f6ee]">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#f2fbf6] to-[#e8f4f0]">
       <header className="py-6 border-b border-primary/15 bg-white/50 shadow animate-popup">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <span className="text-2xl font-bold text-primary">DermaVision</span>
           </Link>
           <Link to="/login">
-            <Button variant="outline" className="border-primary px-6 hover:bg-primary/10 text-primary font-medium">
+            <Button variant="outline" className="border-primary px-6 hover:bg-primary/10 text-primary font-medium ml-6">
               Sign in
             </Button>
           </Link>
@@ -37,9 +38,9 @@ const SignupPage = () => {
           <h2 className="text-2xl font-bold text-center text-primary mb-4">Create your account</h2>
           <form className="space-y-5" onSubmit={handleSignup}>
             <div>
-              <label htmlFor="signup-email" className="block mb-1 text-md font-medium text-primary">Email</label>
+              <label htmlFor="email" className="block mb-1 text-md font-medium text-primary">Email</label>
               <div className="relative">
-                <input type="email" id="signup-email" required autoFocus autoComplete="email"
+                <input type="email" id="email" required autoFocus autoComplete="email"
                   className="w-full px-4 py-2 rounded-md border border-primary/20 bg-white placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/40"
                   placeholder="you@email.com"
                 />
@@ -47,12 +48,11 @@ const SignupPage = () => {
               </div>
             </div>
             <div>
-              <label htmlFor="signup-password" className="block mb-1 text-md font-medium text-primary">Password</label>
+              <label htmlFor="password" className="block mb-1 text-md font-medium text-primary">Password</label>
               <div className="relative">
-                <input type={showPassword ? "text" : "password"} id="signup-password" required autoComplete="new-password"
+                <input type={showPassword ? "text" : "password"} id="password" required autoComplete="new-password"
                   className="w-full px-4 py-2 rounded-md border border-primary/20 bg-white placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/40"
-                  placeholder="Create a password"
-                  minLength={6}
+                  placeholder="••••••••"
                 />
                 <button 
                   type="button" 
@@ -77,7 +77,7 @@ const SignupPage = () => {
           <div className="mt-4 text-center">
             <span className="text-sm text-muted-foreground">
               Already have an account?{" "}
-              <Link to="/login" className="text-primary font-semibold hover:underline">Sign in</Link>
+              <Link to="/login" className="text-primary font-semibold hover:underline ml-2">Sign in</Link>
             </span>
           </div>
         </div>

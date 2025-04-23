@@ -13,6 +13,7 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     setTimeout(() => {
+      localStorage.setItem("dermavision_logged_in", "true");
       setLoading(false);
       navigate("/");
     }, 1100);
@@ -26,7 +27,7 @@ const LoginPage = () => {
             <span className="text-2xl font-bold text-primary">DermaVision</span>
           </Link>
           <Link to="/signup">
-            <Button variant="outline" className="border-primary px-6 hover:bg-primary/10 text-primary font-medium">
+            <Button variant="outline" className="border-primary px-6 hover:bg-primary/10 text-primary font-medium ml-6">
               Create an account
             </Button>
           </Link>
@@ -76,7 +77,7 @@ const LoginPage = () => {
           <div className="mt-4 text-center">
             <span className="text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <Link to="/signup" className="text-primary font-semibold hover:underline">Sign up</Link>
+              <Link to="/signup" className="text-primary font-semibold hover:underline ml-2">Sign up</Link>
             </span>
           </div>
         </div>

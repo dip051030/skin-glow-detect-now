@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, RefreshCw, Shield, Info, Upload, BarChart } from "lucide-react";
+import { Loader2, RefreshCw, Shield, Info, Upload, BarChart, LogOut, LogIn, UserPlus } from "lucide-react";
 import ImageUploader from "@/components/ImageUploader";
 import DetectionResult from "@/components/DetectionResult";
 import UploadGuide from "@/components/UploadGuide";
@@ -12,7 +12,6 @@ import { showNotification } from "@/components/Notification";
 import FeaturesOverview from "@/components/FeaturesOverview";
 import ButtonGroup from "@/components/ButtonGroup";
 import Testimonials from "@/components/Testimonials";
-import { LogIn, UserPlus } from "lucide-react";
 
 const Index = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -20,46 +19,46 @@ const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState<DetectionResultType | null>(null);
   const [activeTab, setActiveTab] = useState<string>("upload");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem("dermavision_logged_in") === "true");
+  }, []);
 
   const handleImageSelected = (file: File) => {
     if (previewUrl) {
       revokeImagePreview(previewUrl);
     }
-
     setResult(null);
     setSelectedImage(file);
     setPreviewUrl(URL.createObjectURL(file));
     setActiveTab("upload");
-    
     showNotification({
       type: "info",
       title: "Image Selected",
-      message: "Your image has been uploaded and is ready for analysis."
+      message: "Your image has been uploaded and is ready for analysis.",
     });
   };
 
   const handleDetection = async () => {
     if (!selectedImage) return;
-
     setIsProcessing(true);
-    
     try {
       const detectionResult = await processImage(selectedImage);
       setResult(detectionResult);
       setActiveTab("result");
-      
       showNotification({
         type: "success",
         title: "Analysis Complete",
-        message: "Your skin image has been successfully analyzed."
+        message: "Your skin image has been successfully analyzed.",
       });
     } catch (error) {
       console.error("Error processing image:", error);
-      
       showNotification({
         type: "error",
         title: "Analysis Failed",
-        message: "An error occurred while analyzing your image. Please try again."
+        message: "An error occurred while analyzing your image. Please try again.",
       });
     } finally {
       setIsProcessing(false);
@@ -70,17 +69,26 @@ const Index = () => {
     if (previewUrl) {
       revokeImagePreview(previewUrl);
     }
-    
     setSelectedImage(null);
     setPreviewUrl(null);
     setResult(null);
     setActiveTab("upload");
-    
     showNotification({
       type: "info",
       title: "Reset Complete",
-      message: "You can now upload a new image for analysis."
+      message: "You can now upload a new image for analysis.",
     });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("dermavision_logged_in");
+    setIsLoggedIn(false);
+    showNotification({
+      type: "info",
+      title: "Logged Out",
+      message: "You have been logged out.",
+    });
+    navigate("/");
   };
 
   return (
@@ -101,18 +109,32 @@ const Index = () => {
               <Info className="w-4 h-4" />
               <span>About</span>
             </Link>
-            <Link to="/login">
-              <Button variant="outline" className="border-primary/50 text-primary px-5 transition-transform hover:scale-105 animate-popup" style={{ animationDelay: "70ms" }}>
-                <LogIn className="w-4 h-4 mr-1" />
-                Log in
+            {!isLoggedIn ? (
+              <div className="flex gap-4">
+                <Link to="/login">
+                  <Button variant="outline" className="border-primary/50 text-primary px-5 transition-transform hover:scale-105 animate-popup" style={{ animationDelay: "70ms" }}>
+                    <LogIn className="w-4 h-4 mr-1" />
+                    Log in
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button className="bg-primary text-white px-5 font-semibold rounded-lg shadow-sm transition-transform hover:scale-105 animate-popup" style={{ animationDelay: "110ms" }}>
+                    <UserPlus className="w-4 h-4 mr-1" />
+                    Sign up
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <Button
+                onClick={handleLogout}
+                className="bg-destructive text-white px-5 font-semibold rounded-lg shadow-sm transition-transform hover:scale-105 flex items-center gap-2"
+                variant="default"
+                style={{ animationDelay: "90ms" }}
+              >
+                <LogOut className="w-4 h-4 mr-1" />
+                Log out
               </Button>
-            </Link>
-            <Link to="/signup">
-              <Button className="bg-primary text-white px-5 font-semibold rounded-lg shadow-sm transition-transform hover:scale-105 animate-popup" style={{ animationDelay: "110ms" }}>
-                <UserPlus className="w-4 h-4 mr-1" />
-                Sign up
-              </Button>
-            </Link>
+            )}
           </div>
         </div>
       </header>
@@ -289,12 +311,24 @@ const Index = () => {
               <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors font-medium">
                 About
               </Link>
-              <Link to="/login" className="text-muted-foreground hover:text-primary transition-colors font-medium flex items-center">
-                <LogIn className="w-4 h-4 mr-1" /> Log in
-              </Link>
-              <Link to="/signup" className="text-primary font-medium hover:underline flex items-center">
-                <UserPlus className="w-4 h-4 mr-1" /> Sign up
-              </Link>
+              {!isLoggedIn ? (
+                <>
+                  <Link to="/login" className="text-muted-foreground hover:text-primary transition-colors font-medium flex items-center">
+                    <LogIn className="w-4 h-4 mr-1" /> Log in
+                  </Link>
+                  <Link to="/signup" className="text-primary font-medium hover:underline flex items-center">
+                    <UserPlus className="w-4 h-4 mr-1" /> Sign up
+                  </Link>
+                </>
+              ) : (
+                <Button
+                  onClick={handleLogout}
+                  className="bg-destructive text-white font-medium rounded-md flex items-center gap-2 px-4 py-2 ml-3"
+                  variant="default"
+                >
+                  <LogOut className="w-4 h-4 mr-1" /> Log out
+                </Button>
+              )}
             </ButtonGroup>
             <div className="hidden md:flex gap-8">
               <Link to="/" className="text-muted-foreground hover:text-primary font-medium transition-colors">
